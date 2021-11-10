@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace WorkLifeBalanceTracker.Models
 {
@@ -11,20 +6,16 @@ namespace WorkLifeBalanceTracker.Models
     {
         public DateTime StartTime { get; set; }
         public string StartReason { get; set; }
-        public DateTime? EndTime { get; set; }
+        public DateTime EndTime { get; set; }
         public string EndReason { get; set; }
         public double TotalTime
         {
             get
             {
-                if (!EndTime.HasValue)
-                    return DateTime.Now.Subtract(StartTime).TotalMilliseconds;
-                    
-                return EndTime.Value.Subtract(StartTime).TotalMilliseconds;
+                return EndTime.Subtract(StartTime).TotalMilliseconds;
             }
         }
 
-        [JsonIgnore]
         public string TotalTimeFormatted
         {
             get

@@ -6,13 +6,17 @@
     <thead>
         <tr>
             <th>Date</th>
+            <th>Count</th>
             <th>Total Time</th>
         </tr>
     </thead>
     @Each
     <tr>
         <td>
-            <a href="/@Current.Title">@Current.Title</a>
+            <a href="/@Current.Day">@Current.Day</a>
+        </td>
+        <td>
+            @Current.Count
         </td>
         <td>
             @Current.TotalTimeFormatted

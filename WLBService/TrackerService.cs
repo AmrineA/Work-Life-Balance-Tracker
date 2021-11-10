@@ -1,13 +1,8 @@
 ﻿using Nancy.Hosting.Self;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.IO;
-using System.Linq;
+using System.Data.SQLite;
 using System.ServiceProcess;
-using WorkLifeBalanceTracker;
-using WorkLifeBalanceTracker.Models;
 
 namespace WorkLifeBalanceTracker
 {
@@ -52,10 +47,17 @@ namespace WorkLifeBalanceTracker
 
         protected override void OnStart(string[] args)
         {
-            State.Entries = JsonConvert.DeserializeObject<List<DayEntry>>(File.ReadAllText(ConfigurationManager.AppSettings["logLocation"]));
             TrackStart("Service Starting");
             _host = new NancyHost(new Uri(ConfigurationManager.AppSettings["siteUrl"]));
             _host.Start();
+            using (var connection = new SQLiteConnection("Data Source=WorkLifeTracker.sqlite;Version=3;"))
+            {
+                connection.Open();
+
+                string sql = "CREATE TABLE IF NOT EXISTS TimeEntries (StartTime DateTime, StartReason VARCHAR(20), EndTime DateTime, EndReason VARCHAR(20))";
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                    command.ExecuteNonQuery();
+            }
         }
 
         protected override void OnStop()
@@ -66,33 +68,47 @@ namespace WorkLifeBalanceTracker
         }
 
         private NancyHost _host;
-        private DayEntry GetToday()
-        {
-            var entry = State.Entries.FirstOrDefault(e => e.Date == DateTime.Today);
-            if (entry is null)
-            {
-                entry = new DayEntry() { Date = DateTime.Today };
-                State.Entries.Add(entry);
-            }
-            return entry;
-        }
 
         private void TrackStart(string reason)
         {
-            State.TimeEntry = new TimeEntry() { StartTime = DateTime.Now, StartReason = reason };
-            var entry = GetToday();
-            entry.TimeEntries.Add(State.TimeEntry);
+            using (var connection = new SQLiteConnection("Data Source=WorkLifeTracker.sqlite;Version=3;"))
+            {
+                connection.Open();
+
+                string sql = @"UPDATE TimeEntries
+                                SET StartTime = $StartTime,
+                                    StartReason = $StartReason
+                                WHERE EndTime IS NULL;
+
+                                INSERT INTO TimeEntries(StartTime, StartReason)
+                                SELECT $StartTime, $StartReason
+                                WHERE NOT EXISTS(SELECT 1 FROM TimeEntries WHERE EndTime IS NULL);";
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("$StartTime", DateTime.Now);
+                    command.Parameters.AddWithValue("$StartReason", reason);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
         private void TrackEnd(string reason)
         {
-            if (State.TimeEntry == null)
-                return;
+            using (var connection = new SQLiteConnection("Data Source=WorkLifeTracker.sqlite;Version=3;"))
+            {
+                connection.Open();
 
-            State.TimeEntry.EndTime = DateTime.Now;
-            State.TimeEntry.EndReason = reason;
-            File.WriteAllText(ConfigurationManager.AppSettings["logLocation"], JsonConvert.SerializeObject(State.Entries));
-            State.TimeEntry = null;
+                string sql = @"UPDATE TimeEntries
+                                SET EndTime = $EndTime,
+                                    EndReason = $EndReason
+                                WHERE EndTime IS NULL;";
+                using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("$EndTime", DateTime.Now);
+                    command.Parameters.AddWithValue("$EndReason", reason);
+                    command.ExecuteNonQuery();
+                }
+            }
         }
     }
 }
