@@ -1,0 +1,37 @@
+﻿@Master['master.html']
+
+@Section['Content']
+<h1>@Model.Title</h1>
+<h2>@Model.TotalTimeFormatted</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Start</th>
+            <th>Start Reason</th>
+            <th>End</th>
+            <th>End Reason</th>
+            <th>Total Time</th>
+        </tr>
+    </thead>
+    @Each.TimeEntriesFormatted
+    <tr>
+        <td>
+            @Current.StartTime
+        </td>
+        <td>
+            @Current.StartReason
+        </td>
+        <td>
+            @Current.EndTime
+        </td>
+        <td>
+            @Current.EndReason
+        </td>
+        <td>
+            @Current.TotalTimeFormatted
+        </td>
+    </tr>
+    @EndEach
+</table>
+   
+@EndSection
