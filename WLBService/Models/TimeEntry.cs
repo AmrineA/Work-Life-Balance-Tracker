@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TrackerService.Models
+namespace WorkLifeBalanceTracker.Models
 {
     public class TimeEntry
     {

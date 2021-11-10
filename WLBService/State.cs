@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TrackerService.Models;
+using WorkLifeBalanceTracker.Models;
 
-namespace TrackerService
+namespace WorkLifeBalanceTracker
 {
     public static class State
     {

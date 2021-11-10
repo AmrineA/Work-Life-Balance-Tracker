@@ -5,7 +5,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WindowsService1
+namespace WorkLifeBalanceTracker
 {
     internal static class Program
     {

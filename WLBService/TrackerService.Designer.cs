@@ -1,4 +1,4 @@
-﻿namespace WindowsService1
+﻿namespace WorkLifeBalanceTracker
 {
     partial class TrackerService
     {

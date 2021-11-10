@@ -6,10 +6,10 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
-using TrackerService;
-using TrackerService.Models;
+using WorkLifeBalanceTracker;
+using WorkLifeBalanceTracker.Models;
 
-namespace WindowsService1
+namespace WorkLifeBalanceTracker
 {
     public partial class TrackerService : ServiceBase
     {

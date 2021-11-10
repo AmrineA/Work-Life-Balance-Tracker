@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{39C90752-B2B1-42EF-8B6E-7F7F5F8100B7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>TrackerService</RootNamespace>
-    <AssemblyName>TrackerService</AssemblyName>
+    <RootNamespace>WLBTrackerService</RootNamespace>
+    <AssemblyName>WLBTrackerService</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
