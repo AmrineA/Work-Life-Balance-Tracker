@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,31 +24,23 @@ namespace TrackerService.Models
                 return this.TimeEntries.Sum(x => x.TotalTime);
             }
         }
+        [JsonIgnore]
         public string TotalTimeFormatted
         {
             get
             {
-                var span = new TimeSpan(0, 0, 0, 0, (int)this.TimeEntriesFormatted.Sum(x => x.TotalTime));
+                var span = new TimeSpan(0,0,0,0, (int)TotalTime);
                 return $"{span.Hours.ToString().PadLeft(2, '0')}:{span.Minutes.ToString().PadLeft(2, '0')}:{span.Seconds.ToString().PadLeft(2, '0')}";
             }
         }
         public List<TimeEntry> TimeEntries { get; set; } = new List<TimeEntry>();
 
+        [JsonIgnore]
         public List<TimeEntry> TimeEntriesFormatted
         {
             get
             {
-                if (Date == DateTime.Today && State.TimeEntry != null)
-                {
-                    var entry = new TimeEntry()
-                    {
-                        StartTime = State.TimeEntry.StartTime,
-                        StartReason = State.TimeEntry.StartReason,
-                    };
-                    return TimeEntries.Union(new List<TimeEntry>() { entry }).OrderByDescending(e => e.StartTime).ToList();
-                }
-                else
-                    return TimeEntries.OrderByDescending(e => e.StartTime).ToList();
+                return TimeEntries.OrderByDescending(e => e.StartTime).ToList();
             }
         }
     }

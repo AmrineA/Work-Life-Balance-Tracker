@@ -80,7 +80,8 @@ namespace WindowsService1
         private void TrackStart(string reason)
         {
             State.TimeEntry = new TimeEntry() { StartTime = DateTime.Now, StartReason = reason };
-
+            var entry = GetToday();
+            entry.TimeEntries.Add(State.TimeEntry);
         }
 
         private void TrackEnd(string reason)
@@ -90,8 +91,6 @@ namespace WindowsService1
 
             State.TimeEntry.EndTime = DateTime.Now;
             State.TimeEntry.EndReason = reason;
-            var entry = GetToday();
-            entry.TimeEntries.Add(State.TimeEntry);
             File.WriteAllText(ConfigurationManager.AppSettings["logLocation"], JsonConvert.SerializeObject(State.Entries));
             State.TimeEntry = null;
         }
