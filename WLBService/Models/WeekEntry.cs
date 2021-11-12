@@ -2,7 +2,7 @@
 
 namespace WorkLifeBalanceTracker.Models
 {
-    public class DayEntry
+    public class WeekEntry
     {
         public string Day { get; set; }
 
@@ -15,7 +15,7 @@ namespace WorkLifeBalanceTracker.Models
             get
             {
                 var span = new TimeSpan(0,0,0, (int)TotalTime);
-                return $"{span.Hours.ToString().PadLeft(2, '0')}:{span.Minutes.ToString().PadLeft(2, '0')}:{span.Seconds.ToString().PadLeft(2, '0')}";
+                return $"{Math.Round(span.TotalHours, 2)} Hours";
             }
         }
 
@@ -23,7 +23,7 @@ namespace WorkLifeBalanceTracker.Models
         {
             get
             {
-                return (int)(TotalTime / 28800 * 100);
+                return (int)(TotalTime / 144000 * 100);
             }
         }
     }

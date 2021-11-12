@@ -47,7 +47,41 @@ namespace WorkLifeBalanceTracker
                 return View["home.html", results];
             });
 
-            Get("/{date}", parameters =>
+            Get("/weeks", _ =>
+            {
+                var results = new List<WeekEntry>();
+
+                using (var connection = new SQLiteConnection("Data Source=WorkLifeTracker.sqlite;Version=3;"))
+                {
+                    connection.Open();
+
+                    string sql = @"SELECT Date(StartTime, 'weekday 0', '-1 days') AS Day, 
+                                        COUNT(*) AS Cnt,
+                                        SUM(julianday(IIF(EndTime IS NULL, datetime('now', 'localtime'), EndTime)) - julianday(StartTime)) * 86400 AS TotalTime
+                                    FROM TimeEntries 
+                                    GROUP BY Date(StartTime, 'weekday 0', '-1 days')
+                                    ORDER BY Day DESC;";
+
+                    using (SQLiteCommand command = new SQLiteCommand(sql, connection))
+                    {
+                        var reader = command.ExecuteReader();
+
+                        while (reader.Read())
+                        {
+                            results.Add(new WeekEntry()
+                            {
+                                Day = reader.GetString(0),
+                                Count = reader.GetInt32(1),
+                                TotalTime = reader.GetFloat(2),
+                            });
+                        }
+                        reader.Close();
+                    }
+                }
+                return View["week.html", results];
+            });
+
+            Get("/days/{date}", parameters =>
             {
                 var results = new DayVM();
 

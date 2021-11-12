@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\WeekEntry.cs" />
     <Compile Include="Models\DayEntry.cs" />
     <Compile Include="Models\DayVM.cs" />
     <Compile Include="Models\TimeEntry.cs" />
@@ -81,6 +82,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="day.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="week.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="master.html">

@@ -3,13 +3,13 @@
 @Section['Content']
 <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link active" href="/">Days</a>
+        <a class="nav-link" href="/">Days</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="/weeks">Weeks</a>
+        <a class="nav-link active" href="/weeks">Weeks</a>
     </li>
 </ul>
-<h1>Days</h1>
+<h1>Weeks</h1>
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +22,7 @@
     @Each
     <tr>
         <td>
-            <a href="/days/@Current.Day">@Current.Day</a>
+            <a href="/@Current.Day">@Current.Day</a>
         </td>
         <td>
             @Current.Count
@@ -38,5 +38,5 @@
     </tr>
     @EndEach
 </table>
-   
+
 @EndSection
