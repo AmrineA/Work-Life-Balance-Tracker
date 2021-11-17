@@ -13,7 +13,7 @@ namespace WorkLifeBalanceTracker
     {
         public RoutesModule()
         {
-            Get("/", _ =>
+            Get("/days", _ =>
             {
                 var results = new List<DayEntry>();
 
@@ -44,10 +44,10 @@ namespace WorkLifeBalanceTracker
                         reader.Close();
                     }
                 }
-                return View["home.html", results];
+                return View["days.html", results];
             });
 
-            Get("/weeks", _ =>
+            Get("/", _ =>
             {
                 var results = new List<WeekEntry>();
 
